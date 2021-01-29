@@ -1,0 +1,128 @@
+{
+	"version": "0.2.0",
+	"configurations": [
+		{
+			"name": "TheAculon (Debug)",
+			"request": "launch",
+			"preLaunchTask": "TheAculon Win64 Debug Build",
+			"program": "C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\Binaries\\Win64\\UE4-Win64-Debug.exe",
+			"args": [
+			],
+			"cwd": "C:\\Program Files (x86)\\EpicGames\\UE_4.26",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "TheAculon (DebugGame)",
+			"request": "launch",
+			"preLaunchTask": "TheAculon Win64 DebugGame Build",
+			"program": "C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\Binaries\\Win64\\UE4-Win64-DebugGame.exe",
+			"args": [
+			],
+			"cwd": "C:\\Program Files (x86)\\EpicGames\\UE_4.26",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "TheAculon (Development)",
+			"request": "launch",
+			"preLaunchTask": "TheAculon Win64 Development Build",
+			"program": "C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\Binaries\\Win64\\UE4.exe",
+			"args": [
+			],
+			"cwd": "C:\\Program Files (x86)\\EpicGames\\UE_4.26",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "TheAculon (Shipping)",
+			"request": "launch",
+			"preLaunchTask": "TheAculon Win64 Shipping Build",
+			"program": "C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\Binaries\\Win64\\UE4-Win64-Shipping.exe",
+			"args": [
+			],
+			"cwd": "C:\\Program Files (x86)\\EpicGames\\UE_4.26",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "TheAculon (Test)",
+			"request": "launch",
+			"preLaunchTask": "TheAculon Win64 Test Build",
+			"program": "C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\Binaries\\Win64\\UE4-Win64-Test.exe",
+			"args": [
+			],
+			"cwd": "C:\\Program Files (x86)\\EpicGames\\UE_4.26",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "TheAculonEditor (Debug)",
+			"request": "launch",
+			"preLaunchTask": "TheAculonEditor Win64 Debug Build",
+			"program": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Binaries\\Win64\\UE4Editor-Win64-Debug.exe",
+			"args": [
+				"C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\TheAculon.uproject"
+			],
+			"cwd": "C:\\Program Files (x86)\\EpicGames\\UE_4.26",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "TheAculonEditor (DebugGame)",
+			"request": "launch",
+			"preLaunchTask": "TheAculonEditor Win64 DebugGame Build",
+			"program": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Binaries\\Win64\\UE4Editor-Win64-DebugGame.exe",
+			"args": [
+				"C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\TheAculon.uproject"
+			],
+			"cwd": "C:\\Program Files (x86)\\EpicGames\\UE_4.26",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "TheAculonEditor (Development)",
+			"request": "launch",
+			"preLaunchTask": "TheAculonEditor Win64 Development Build",
+			"program": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Binaries\\Win64\\UE4Editor.exe",
+			"args": [
+				"C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\TheAculon.uproject"
+			],
+			"cwd": "C:\\Program Files (x86)\\EpicGames\\UE_4.26",
+			"stopAtEntry": false,
+			"externalConsole": true,
+			"type": "cppvsdbg",
+			"visualizerFile": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Extras\\VisualStudioDebugging\\UE4.natvis"
+		},
+		{
+			"name": "Generate Project Files",
+			"type": "clr",
+			"request": "launch",
+			"program": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Binaries\\DotNET\\UnrealBuildTool.exe",
+			"console": "externalTerminal",
+			"args": [
+				"-projectfiles",
+				"-vscode",
+				"-project=\"C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\TheAculon.uproject\"",
+				"-game",
+				"-engine"
+			],
+			"internalConsoleOptions": "openOnSessionStart",
+			"cwd": "C:\\Program Files (x86)\\EpicGames\\UE_4.26"
+		}
+	]
+}

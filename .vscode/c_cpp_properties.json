@@ -1,0 +1,12 @@
+{
+    "configurations": [
+        {
+            "name": "TheAculonEditor Editor Win64 Development (TheAculon)",
+            "intelliSenseMode": "msvc-x64",
+            "compileCommands": "C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\.vscode\\compileCommands_TheAculon.json",
+            "cStandard": "c17",
+            "cppStandard": "c++17"
+        }
+    ],
+    "version": 4
+}
