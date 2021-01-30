@@ -44,6 +44,7 @@ void AAculon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAxis(TEXT("LookRightRate"), this, &AAculon::LookRightRate);
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
+	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AAculon::Shoot);
 }
 
 void AAculon::MoveForward(float AxisValue)
@@ -64,6 +65,11 @@ void AAculon::LookUpRate(float AxisValue)
 void AAculon::LookRightRate(float AxisValue)
 {
 	AddControllerYawInput(AxisValue * RotationRate * GetWorld()->GetDeltaSeconds());
+}
+
+void AAculon::Shoot()
+{
+	Blaster->PullTrigger();
 }
 
 // void AAculon::LookUp(float AxisValue) 

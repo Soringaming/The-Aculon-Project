@@ -14,6 +14,8 @@ class THEACULON_API AAculonBlaster : public AActor
 public:
 	// Sets default values for this actor's properties
 	AAculonBlaster();
+	
+	void PullTrigger();
 
 protected:
 	// Called when the game starts or when spawned

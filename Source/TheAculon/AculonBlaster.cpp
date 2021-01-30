@@ -19,6 +19,11 @@ AAculonBlaster::AAculonBlaster()
 
 }
 
+void AAculonBlaster::PullTrigger() 
+{
+	UE_LOG(LogTemp, Warning, TEXT("You've Been Shot"));
+}
+
 // Called when the game starts or when spawned
 void AAculonBlaster::BeginPlay()
 {
