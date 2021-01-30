@@ -2,6 +2,7 @@
 
 
 #include "Aculon.h"
+#include "AculonBlaster.h"
 
 // Sets default values
 AAculon::AAculon()
@@ -15,6 +16,11 @@ AAculon::AAculon()
 void AAculon::BeginPlay()
 {
 	Super::BeginPlay();
+
+	Blaster = GetWorld()->SpawnActor<AAculonBlaster>(BlasterClass);
+	Blaster->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
+	Blaster->SetOwner(this);
+
 
 }
 

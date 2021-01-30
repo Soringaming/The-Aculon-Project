@@ -6,6 +6,8 @@
 #include "GameFramework/Character.h"
 #include "Aculon.generated.h"
 
+class AAculonBlaster;
+
 UCLASS()
 class THEACULON_API AAculon : public ACharacter
 {
@@ -35,4 +37,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		float RotationRate = 50;
 
+	UPROPERTY(EditDefaultsOnly)
+		TSubclassOf<AAculonBlaster> BlasterClass;
+
+	UPROPERTY()
+		AAculonBlaster* Blaster;
 };

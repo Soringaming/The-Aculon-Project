@@ -23,7 +23,6 @@ AAculonBlaster::AAculonBlaster()
 void AAculonBlaster::BeginPlay()
 {
 	Super::BeginPlay();
-
 }
 
 // Called every frame
