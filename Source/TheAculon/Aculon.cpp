@@ -17,11 +17,22 @@ void AAculon::BeginPlay()
 {
 	Super::BeginPlay();
 
+	Health = MaxHealth;
+
 	Blaster = GetWorld()->SpawnActor<AAculonBlaster>(BlasterClass);
 	Blaster->AttachToComponent(GetMesh(), FAttachmentTransformRules::KeepRelativeTransform, TEXT("WeaponSocket"));
 	Blaster->SetOwner(this);
 
 
+}
+
+bool AAculon::IsDead() const
+{
+	if (Health <= 0)
+	{
+		return true;
+	}
+	return false;
 }
 
 // Called every frame
@@ -45,6 +56,19 @@ void AAculon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 	PlayerInputComponent->BindAction(TEXT("Jump"), EInputEvent::IE_Pressed, this, &ACharacter::Jump);
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AAculon::Shoot);
+	PlayerInputComponent->BindAction(TEXT("Charge"), EInputEvent::IE_Pressed, this, &AAculon::StartChargingShot);
+	PlayerInputComponent->BindAction(TEXT("Charge"), EInputEvent::IE_Released, this, &AAculon::StopChargingShot);
+}
+
+float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
+{
+	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
+	DamageToApply = FMath::Min(Health, DamageToApply);
+	Health -= DamageToApply;
+	UE_LOG(LogTemp, Warning, TEXT("Health Left: %f"), Health);
+
+	return DamageToApply;
+
 }
 
 void AAculon::MoveForward(float AxisValue)
@@ -70,6 +94,18 @@ void AAculon::LookRightRate(float AxisValue)
 void AAculon::Shoot()
 {
 	Blaster->PullTrigger();
+}
+
+void AAculon::StartChargingShot()
+{
+	bIsCharging = true;
+	Blaster->SetCharging(bIsCharging);
+}
+
+void AAculon::StopChargingShot()
+{
+	bIsCharging = false;
+	Blaster->SetCharging(bIsCharging);
 }
 
 // void AAculon::LookUp(float AxisValue) 
