@@ -9,6 +9,21 @@ void AShooterAIController::BeginPlay()
 {
     Super::BeginPlay();
 
+}
+
+void AShooterAIController::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
     APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
-    SetFocus(PlayerPawn);
+
+    if (LineOfSightTo(PlayerPawn))
+    {
+        SetFocus(PlayerPawn);
+        MoveToActor(PlayerPawn, 800.0f, false);
+    }
+    else
+    {
+        ClearFocus(EAIFocusPriority::Gameplay);
+        StopMovement();
+    }
 }
