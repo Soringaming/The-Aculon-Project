@@ -3,6 +3,8 @@
 
 #include "Aculon.h"
 #include "AculonBlaster.h"
+#include "Components/CapsuleComponent.h"
+#include "TheAculonGameModeBase.h"
 
 // Sets default values
 AAculon::AAculon()
@@ -66,6 +68,24 @@ float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageE
 	DamageToApply = FMath::Min(Health, DamageToApply);
 	Health -= DamageToApply;
 	UE_LOG(LogTemp, Warning, TEXT("Health Left: %f"), Health);
+
+	if (IsDead())
+	{
+		ATheAculonGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ATheAculonGameModeBase>();
+		if (GameMode != nullptr)
+		{
+			GameMode->PawnKilled(this);
+			if (!bHasGeneratedScore)
+			{
+				int32 AmmountKilled = 1;
+				GameMode->IncrementScore(&AmmountKilled, &ScoreWorth, &DoorScore);
+				bHasGeneratedScore = true;
+			}
+		}
+
+		DetachFromControllerPendingDestroy();
+		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	}
 
 	return DamageToApply;
 

@@ -24,13 +24,13 @@ protected:
 public:
 	UFUNCTION(BlueprintPure)
 		bool IsDead() const;
-	
+
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
 	// Called to bind functionality to input
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-	
+
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	void Shoot();
@@ -45,15 +45,22 @@ private:
 	void StopChargingShot();
 
 	bool bIsCharging = false;
+	bool bHasGeneratedScore = false;
 
 	UPROPERTY(EditAnywhere)
 		float RotationRate = 50;
-	
+
 	UPROPERTY(EditDefaultsOnly)
 		float MaxHealth = 100;
-	
+
+	UPROPERTY(EditAnywhere)
+		int32 ScoreWorth = 500;
+
+	UPROPERTY(EditAnywhere)
+		int32 DoorScore = 0;
+
 	UPROPERTY(VisibleAnywhere)
-	float Health;
+		float Health;
 
 	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AAculonBlaster> BlasterClass;

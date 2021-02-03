@@ -49,7 +49,10 @@ void AAculonBlaster::PullTrigger()
 	CameraTargetLocation = End;
 
 	FHitResult Hit;
-	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1);
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
+	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
 	if (bSuccess && ImpactEffect)
 	{
 		FVector ShotDirection = -Rotation.Vector();
@@ -64,7 +67,6 @@ void AAculonBlaster::PullTrigger()
 			UGameplayStatics::ApplyRadialDamage(GetWorld(), Damage, Hit.Location, AoeRadius, nullptr, TArray<AActor*>(), this, (AController*)GetOwner(), true, ECC_GameTraceChannel1);
 		}
 	}
-	Fire();
 }
 
 void AAculonBlaster::SetCharging(bool bIsCharging)
@@ -76,7 +78,6 @@ void AAculonBlaster::SetCharging(bool bIsCharging)
 void AAculonBlaster::Fire()
 {
 	// Attempt to fire a projectile
-	UE_LOG(LogTemp, Warning, TEXT("We, are, going, to, FIREEEEEEEEEEEEEE"));
 
 }
 

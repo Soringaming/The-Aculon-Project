@@ -7,11 +7,15 @@
 #include "TheAculonGameModeBase.generated.h"
 
 /**
- * 
+ *
  */
 UCLASS()
 class THEACULON_API ATheAculonGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
+public:
+	virtual void PawnKilled(APawn* PawnKilled);
+	virtual void IncrementScore(int32* KilledAmmount, int32* ScoreAmount, int32* AmountToDoor);
+
 };
