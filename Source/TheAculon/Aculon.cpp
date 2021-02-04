@@ -38,6 +38,11 @@ bool AAculon::IsDead() const
 	return false;
 }
 
+float AAculon::GetHealthPercent() const
+{
+	return Health / MaxHealth;
+}
+
 // Called every frame
 void AAculon::Tick(float DeltaTime)
 {

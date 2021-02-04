@@ -5,9 +5,34 @@
 #include "TimerManager.h"
 #include "Blueprint/UserWidget.h"
 
+void AAculonPlayerController::BeginPlay()
+{
+    Super::BeginPlay();
+    SetUpHUD();
+}
+
+void AAculonPlayerController::SetUpHUD()
+{
+    HUD = CreateWidget(this, HUDClass);
+    if (HUD)
+    {
+        HUD->AddToViewport();
+    }
+}
+
+void AAculonPlayerController::RemoveHUD()
+{
+    if (HUD)
+    {
+        HUD->RemoveFromViewport();
+    }
+}
+
 void AAculonPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIsWinner)
 {
     Super::GameHasEnded(EndGameFocus, bIsWinner);
+
+    RemoveHUD();
 
     if (bIsWinner)
     {
