@@ -22,5 +22,7 @@ private:
 	int32 EnemiesKilled = 0;
 	int32 ScoreForEnemies = 0;
 	int32 DoorScore = 0;
+	
+	void EndGame(bool bIsPlayerWinner);
 
 };

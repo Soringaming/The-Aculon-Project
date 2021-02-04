@@ -6,6 +6,7 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/Controller.h"
 #include "BehaviorTree/BlackboardComponent.h"
+#include "Aculon.h"
 
 void AShooterAIController::BeginPlay()
 {
@@ -24,4 +25,15 @@ void AShooterAIController::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 
+}
+
+bool AShooterAIController::IsDead() const
+{
+    AAculon* ControlledCharacter = Cast<AAculon>(GetPawn());
+    if (ControlledCharacter != nullptr)
+    {
+        return ControlledCharacter->IsDead();
+    }
+
+    return true;
 }

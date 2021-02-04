@@ -19,20 +19,17 @@ public:
 
 	void PullTrigger();
 	void SetCharging(bool bIsCharging);
-	void Fire();
 
 protected:
 	// Called when the game starts or when spawned
 	virtual void BeginPlay() override;
 
 	// Projectile class to spawn
-	UPROPERTY(EditAnywhere, Category = Projectile)
-		TSubclassOf<class AShooterProjectile> ProjectileClass;
+
 
 	// Gun muzzle offset from the camera location
 
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Gameplay)
-		FVector MuzzleOffset;
+
 
 public:
 	// Called every frame
@@ -42,42 +39,52 @@ private:
 	UPROPERTY(VisibleAnywhere)
 		USceneComponent* Root;
 
-	UPROPERTY(VisibleAnywhere)
+	UPROPERTY(VisibleAnywhere, Category = "Visual")
 		UStaticMeshComponent* Mesh;
+	
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+		USoundBase* MuzzleSound;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+		USoundBase* ImpactSound;
+
+	UPROPERTY(EditAnywhere, Category = "FX")
 		class UNiagaraSystem* MuzzleEffect;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "FX")
 		class UNiagaraSystem* MuzzleFlash;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "FX")
 		class UNiagaraSystem* ImpactEffect;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "FX")
 		FVector ParticleScale = FVector(1, 1, 1);
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "FX")
 		FVector ImpactParticleScale = FVector(1, 1, 1);
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "FX")
 		FRotator ParticleSpawnPointRotation = FRotator(0, 0, 0);
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "FX")
 		FVector MuzzleFlashLocation = FVector(0, 0, 0);
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "FX")
 		FRotator MuzzleFlashRotation = FRotator(0, 0, 0);
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "FX")
 		bool AutoDestroy = true;
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "FX")
 		bool AutoActivate = true;
 
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Gun Traits")
 		float MaxRange = 4000;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Gun Traits")
 		float Damage = 10;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditAnywhere, Category = "Gun Traits")
 		float AoeRadius = 10;
 	FVector CameraLocation;
 	FRotator CameraRotation;
 	FVector CameraTargetLocation;
 	bool IsGunCharging = false;
+
+	bool GunTrace(FHitResult& Hit, FVector& ShotDirection);
+
+	AController* GetOwnerController() const;
 
 };

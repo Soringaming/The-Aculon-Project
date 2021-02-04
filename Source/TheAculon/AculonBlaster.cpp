@@ -27,43 +27,30 @@ void AAculonBlaster::PullTrigger()
 	{
 		UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleFlash, Mesh, TEXT("MuzzleFlashSocket"), MuzzleFlashLocation, MuzzleFlashRotation, EAttachLocation::SnapToTarget, AutoDestroy, AutoActivate);
 	}
-
-	APawn* OwnerPawn = Cast<APawn>(GetOwner());
-	if (OwnerPawn == nullptr)
+	if (MuzzleSound)
 	{
-		return;
+		UGameplayStatics::SpawnSoundAttached(MuzzleSound, Mesh, TEXT("MuzzleFlashSocket"));
 	}
-	AController* OwnerController = OwnerPawn->GetController();
-	if (OwnerController == nullptr)
-	{
-		return;
-	}
-	FVector Location;
-	FRotator Rotation;
-	OwnerController->GetPlayerViewPoint(Location, Rotation);
-
-	FVector End = Location + Rotation.Vector() * MaxRange;
-
-	CameraLocation = Location;
-	CameraRotation = Rotation;
-	CameraTargetLocation = End;
 
 	FHitResult Hit;
-	FCollisionQueryParams Params;
-	Params.AddIgnoredActor(this);
-	Params.AddIgnoredActor(GetOwner());
-	bool bSuccess = GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
-	if (bSuccess && ImpactEffect)
+	FVector ShotDirection;
+	bool bSuccess = GunTrace(Hit, ShotDirection);
+	if (bSuccess)
 	{
-		FVector ShotDirection = -Rotation.Vector();
-		UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation(), ImpactParticleScale, AutoDestroy, AutoActivate);
+		if (ImpactEffect)
+		{
+			UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), ImpactEffect, Hit.Location, ShotDirection.Rotation(), ImpactParticleScale, AutoDestroy, AutoActivate);
+		}
+		if (ImpactSound)
+		{
+			UGameplayStatics::PlaySoundAtLocation(GetWorld(), ImpactSound, Hit.Location);
+		}
 		AActor* HitActor = Hit.GetActor();
-
-
 		if (HitActor != nullptr)
 		{
 			// FPointDamageEvent DamageEvent(Damage, Hit, ShotDirection, nullptr);
 			// HitActor->TakeDamage(Damage, DamageEvent, OwnerController, this);
+			AController* OwnerController = GetOwnerController();
 			UGameplayStatics::ApplyRadialDamage(GetWorld(), Damage, Hit.Location, AoeRadius, nullptr, TArray<AActor*>(), this, (AController*)GetOwner(), true, ECC_GameTraceChannel1);
 		}
 	}
@@ -73,12 +60,6 @@ void AAculonBlaster::SetCharging(bool bIsCharging)
 {
 	if (bIsCharging) { IsGunCharging = true; }
 	else { IsGunCharging = false; }
-}
-
-void AAculonBlaster::Fire()
-{
-	// Attempt to fire a projectile
-
 }
 
 // Called when the game starts or when spawned
@@ -97,5 +78,40 @@ void AAculonBlaster::Tick(float DeltaTime)
 		// UNiagaraFunctionLibrary::SpawnSystemAttached(MuzzleEffect, Mesh, TEXT("MuzzleFlashSocket"), MuzzleFlashLocation, MuzzleFlashRotation, EAttachLocation::SnapToTarget, AutoDestroy, AutoActivate);
 	}
 
+}
+
+bool AAculonBlaster::GunTrace(FHitResult& Hit, FVector& ShotDirection)
+{
+	AController* OwnerController = GetOwnerController();
+	if (OwnerController == nullptr)
+	{
+		return false;
+	}
+	FVector Location;
+	FRotator Rotation;
+	OwnerController->GetPlayerViewPoint(Location, Rotation);
+
+	FVector End = Location + Rotation.Vector() * MaxRange;
+
+	CameraLocation = Location;
+	CameraRotation = Rotation;
+	CameraTargetLocation = End;
+	ShotDirection = -Rotation.Vector();
+
+	FCollisionQueryParams Params;
+	Params.AddIgnoredActor(this);
+	Params.AddIgnoredActor(GetOwner());
+
+	return GetWorld()->LineTraceSingleByChannel(Hit, Location, End, ECollisionChannel::ECC_GameTraceChannel1, Params);
+}
+
+AController* AAculonBlaster::GetOwnerController() const
+{
+	APawn* OwnerPawn = Cast<APawn>(GetOwner());
+	if (OwnerPawn == nullptr)
+	{
+		return nullptr;
+	}
+	return OwnerPawn->GetController();
 }
 

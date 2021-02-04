@@ -46,6 +46,13 @@ private:
 
 	bool bIsCharging = false;
 	bool bHasGeneratedScore = false;
+	bool bHasPlayedDeathSound = false;
+	
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	USoundBase* HitSound;
+
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+	USoundBase* DeathSound;
 
 	UPROPERTY(EditAnywhere)
 		float RotationRate = 50;

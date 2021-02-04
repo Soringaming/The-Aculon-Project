@@ -5,6 +5,7 @@
 #include "AculonBlaster.h"
 #include "Components/CapsuleComponent.h"
 #include "TheAculonGameModeBase.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AAculon::AAculon()
@@ -69,6 +70,11 @@ float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageE
 	Health -= DamageToApply;
 	UE_LOG(LogTemp, Warning, TEXT("Health Left: %f"), Health);
 
+	if (HitSound && !IsDead())
+	{
+		UGameplayStatics::SpawnSoundAttached(HitSound, GetMesh(), TEXT("SoundSocket"));
+	}
+
 	if (IsDead())
 	{
 		ATheAculonGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ATheAculonGameModeBase>();
@@ -82,7 +88,11 @@ float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageE
 				bHasGeneratedScore = true;
 			}
 		}
-
+		if (DeathSound && !bHasPlayedDeathSound)
+		{
+			UGameplayStatics::SpawnSoundAttached(DeathSound, GetMesh(), TEXT("SoundSocket"));
+			bHasPlayedDeathSound = true;
+		}
 		DetachFromControllerPendingDestroy();
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
