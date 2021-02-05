@@ -36,7 +36,14 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
+	int32 GetRemainingLives();
+
 	void Shoot();
+	void SaveGame();
+	void LoadGame();
+	void SetAculonRespawnState(bool RespawnState);
+	void RemoveLives();
+	void RespawnAculon();
 
 private:
 	void MoveForward(float AxisValue);
@@ -50,12 +57,13 @@ private:
 	bool bIsCharging = false;
 	bool bHasGeneratedScore = false;
 	bool bHasPlayedDeathSound = false;
-	
-	UPROPERTY(EditAnywhere, Category = "Sounds")
-	USoundBase* HitSound;
+	bool bIsPlayerRespawning = false;
 
 	UPROPERTY(EditAnywhere, Category = "Sounds")
-	USoundBase* DeathSound;
+		USoundBase* HitSound;
+
+	UPROPERTY(EditAnywhere, Category = "Sounds")
+		USoundBase* DeathSound;
 
 	UPROPERTY(EditAnywhere)
 		float RotationRate = 50;
@@ -73,8 +81,12 @@ private:
 		float Health;
 
 	UPROPERTY(EditDefaultsOnly)
+		int32 Lives = 10;
+
+	UPROPERTY(EditDefaultsOnly)
 		TSubclassOf<AAculonBlaster> BlasterClass;
 
 	UPROPERTY()
 		AAculonBlaster* Blaster;
+
 };

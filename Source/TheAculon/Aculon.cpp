@@ -6,12 +6,14 @@
 #include "Components/CapsuleComponent.h"
 #include "TheAculonGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "AculonSaveGame.h"
 
 // Sets default values
 AAculon::AAculon()
 {
 	// Set this character to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
+	bGenerateOverlapEventsDuringLevelStreaming = true;
 
 }
 
@@ -66,14 +68,60 @@ void AAculon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AAculon::Shoot);
 	PlayerInputComponent->BindAction(TEXT("Charge"), EInputEvent::IE_Pressed, this, &AAculon::StartChargingShot);
 	PlayerInputComponent->BindAction(TEXT("Charge"), EInputEvent::IE_Released, this, &AAculon::StopChargingShot);
+
+	PlayerInputComponent->BindAction(TEXT("LoadGame"), EInputEvent::IE_Released, this, &AAculon::LoadGame);
+	PlayerInputComponent->BindAction(TEXT("SaveGame"), EInputEvent::IE_Released, this, &AAculon::SaveGame);
 }
+
+void AAculon::SaveGame()
+{
+	// Create an instance of our save game class, and also the first player
+	UAculonSaveGame* SaveGameInstance = Cast<UAculonSaveGame>(UGameplayStatics::CreateSaveGameObject(UAculonSaveGame::StaticClass()));
+	// set the players location and rotation to be saved
+	if (!bIsPlayerRespawning)
+	{
+		SaveGameInstance->PlayerLocation = this->GetActorLocation();
+		SaveGameInstance->PlayerRotation = this->GetActorRotation();
+	}
+
+	// Get The Gamemode for saving scores
+	ATheAculonGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ATheAculonGameModeBase>();
+	if (GameMode != nullptr)
+	{
+		SaveGameInstance->PlayerEnemiesKilled = GameMode->GetEnemiesKilled();
+		SaveGameInstance->PlayerScore = GameMode->GetScore();
+		SaveGameInstance->PlayerDoorScore = GameMode->GetDoorScore();
+	}
+
+
+	// save the savegameinstance
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Slot1"), 0);
+}
+
+void AAculon::LoadGame()
+{
+	// Create an instance of our save game class, and also the first player
+	UAculonSaveGame* SaveGameInstance = Cast<UAculonSaveGame>(UGameplayStatics::CreateSaveGameObject(UAculonSaveGame::StaticClass()));
+	//Load the saved game into our savegameinstance
+	SaveGameInstance = Cast<UAculonSaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Slot1"), 0));
+	ATheAculonGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ATheAculonGameModeBase>();
+	if (SaveGameInstance && GameMode != nullptr)
+	{
+		GameMode->SetEnemiesKilled(&SaveGameInstance->PlayerEnemiesKilled);
+		GameMode->SetScore(&SaveGameInstance->PlayerScore);
+		GameMode->SetDoorScore(&SaveGameInstance->PlayerDoorScore);
+		RespawnAculon();
+		this->SetActorLocation(SaveGameInstance->PlayerLocation);
+		this->SetActorRotation(SaveGameInstance->PlayerRotation);
+	}
+}
+
 
 float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
 	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	DamageToApply = FMath::Min(Health, DamageToApply);
 	Health -= DamageToApply;
-	UE_LOG(LogTemp, Warning, TEXT("Health Left: %f"), Health);
 
 	if (HitSound && !IsDead())
 	{
@@ -98,7 +146,11 @@ float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageE
 			UGameplayStatics::SpawnSoundAttached(DeathSound, GetMesh(), TEXT("SoundSocket"));
 			bHasPlayedDeathSound = true;
 		}
-		DetachFromControllerPendingDestroy();
+		if (GetRemainingLives() <= 0 || this->GetController() != UGameplayStatics::GetPlayerController(GetWorld(), 0))
+		{
+			DetachFromControllerPendingDestroy();
+		}
+		DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 
@@ -142,6 +194,37 @@ void AAculon::StopChargingShot()
 	bIsCharging = false;
 	Blaster->SetCharging(bIsCharging);
 }
+
+int32 AAculon::GetRemainingLives()
+{
+	return Lives;
+}
+
+void AAculon::RemoveLives()
+{
+	if (Lives > 0)
+	{
+		Lives -= 1;
+	}
+}
+
+void AAculon::RespawnAculon()
+{
+	Health = MaxHealth;
+	GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+	EnableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	ATheAculonGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ATheAculonGameModeBase>();
+	if (GameMode)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Player score: %d Player DoorScore: %d Player Lives: %d Player Enemy Kills: %d"), GameMode->GetScore(), GameMode->GetDoorScore(), GameMode->GetEnemiesKilled());
+	}
+}
+
+void AAculon::SetAculonRespawnState(bool RespawnState)
+{
+	bIsPlayerRespawning = RespawnState;
+}
+
 
 // void AAculon::LookUp(float AxisValue) 
 // {

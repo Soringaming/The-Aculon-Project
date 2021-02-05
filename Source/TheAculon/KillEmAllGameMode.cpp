@@ -41,6 +41,36 @@ void AKillEmAllGameMode::IncrementScore(int32* KilledAmmount, int32* ScoreAmount
     DoorScore += *AmountToDoor;
 }
 
+int32 AKillEmAllGameMode::GetEnemiesKilled()
+{
+    return EnemiesKilled;
+}
+
+int32 AKillEmAllGameMode::GetScore()
+{
+    return ScoreForEnemies;
+}
+
+int32 AKillEmAllGameMode::GetDoorScore()
+{
+    return DoorScore;
+}
+
+void AKillEmAllGameMode::SetEnemiesKilled(int32* SetKilledAmount)
+{
+    EnemiesKilled = *SetKilledAmount;
+}
+
+void AKillEmAllGameMode::SetScore(int32* SetScoreAmount)
+{
+    ScoreForEnemies = *SetScoreAmount;
+}
+
+void AKillEmAllGameMode::SetDoorScore(int32* SetDoorScoreAmount)
+{
+    DoorScore = *SetDoorScoreAmount;
+}
+
 void AKillEmAllGameMode::EndGame(bool bIsPlayerWinner)
 {
     for (AController* Controller : TActorRange<AController>(GetWorld()))

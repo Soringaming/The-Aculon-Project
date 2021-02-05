@@ -20,12 +20,32 @@
 		"directory": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Source"
 	},
 	{
+		"file": "C:\\\\Users\\\\Sorin\\\\OneDrive\\\\Documents\\\\repos\\\\UnrealEngine4\\\\The Aculon\\\\The Aculon Project\\\\Source\\\\TheAculon\\\\AculonCheckpoint.cpp",
+		"command": "cl.exe @\"C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\.vscode\\compileCommands_TheAculon\\TheAculon.187.rsp\"",
+		"directory": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "C:\\\\Users\\\\Sorin\\\\OneDrive\\\\Documents\\\\repos\\\\UnrealEngine4\\\\The Aculon\\\\The Aculon Project\\\\Source\\\\TheAculon\\\\AculonCheckpoint.h",
+		"command": "cl.exe @\"C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\.vscode\\compileCommands_TheAculon\\TheAculon.187.rsp\"",
+		"directory": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Source"
+	},
+	{
 		"file": "C:\\\\Users\\\\Sorin\\\\OneDrive\\\\Documents\\\\repos\\\\UnrealEngine4\\\\The Aculon\\\\The Aculon Project\\\\Source\\\\TheAculon\\\\AculonPlayerController.cpp",
 		"command": "cl.exe @\"C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\.vscode\\compileCommands_TheAculon\\TheAculon.187.rsp\"",
 		"directory": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Source"
 	},
 	{
 		"file": "C:\\\\Users\\\\Sorin\\\\OneDrive\\\\Documents\\\\repos\\\\UnrealEngine4\\\\The Aculon\\\\The Aculon Project\\\\Source\\\\TheAculon\\\\AculonPlayerController.h",
+		"command": "cl.exe @\"C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\.vscode\\compileCommands_TheAculon\\TheAculon.187.rsp\"",
+		"directory": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "C:\\\\Users\\\\Sorin\\\\OneDrive\\\\Documents\\\\repos\\\\UnrealEngine4\\\\The Aculon\\\\The Aculon Project\\\\Source\\\\TheAculon\\\\AculonSaveGame.cpp",
+		"command": "cl.exe @\"C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\.vscode\\compileCommands_TheAculon\\TheAculon.187.rsp\"",
+		"directory": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Source"
+	},
+	{
+		"file": "C:\\\\Users\\\\Sorin\\\\OneDrive\\\\Documents\\\\repos\\\\UnrealEngine4\\\\The Aculon\\\\The Aculon Project\\\\Source\\\\TheAculon\\\\AculonSaveGame.h",
 		"command": "cl.exe @\"C:\\Users\\Sorin\\OneDrive\\Documents\\repos\\UnrealEngine4\\The Aculon\\The Aculon Project\\.vscode\\compileCommands_TheAculon\\TheAculon.187.rsp\"",
 		"directory": "C:\\Program Files (x86)\\EpicGames\\UE_4.26\\Engine\\Source"
 	},
