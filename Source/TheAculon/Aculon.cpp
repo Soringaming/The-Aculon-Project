@@ -72,6 +72,7 @@ void AAculon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
+	if (bIsRespawning) { return 0; }
 
 	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	DamageToApply = FMath::Min(Health, DamageToApply);
@@ -88,6 +89,7 @@ float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageE
 
 	if (IsDead())
 	{
+		bIsRespawning = true;
 		ATheAculonGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ATheAculonGameModeBase>();
 		if (GameMode != nullptr)
 		{
@@ -175,7 +177,6 @@ void AAculon::LoadGame()
 	ATheAculonGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ATheAculonGameModeBase>();
 	if (SaveGameInstance && GameMode != nullptr)
 	{
-		SendToLevel(SaveGameInstance->AculonCurrentLevelTitle);
 		GameMode->IncrementScore(&SaveGameInstance->PlayerEnemiesKilled, &SaveGameInstance->PlayerScore, &SaveGameInstance->PlayerDoorScore, true);
 		RespawnAculon();
 		this->SetActorLocation(SaveGameInstance->PlayerLocation);
@@ -202,6 +203,7 @@ void AAculon::StopChargingShot()
 
 void AAculon::RespawnAculon()
 {
+	bIsRespawning = false;
 	Health = MaxHealth;
 	this->EnableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
 	this->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);

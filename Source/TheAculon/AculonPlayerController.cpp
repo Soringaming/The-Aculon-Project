@@ -6,6 +6,7 @@
 #include "Blueprint/UserWidget.h"
 #include "Aculon.h"
 #include "Kismet/GameplayStatics.h"
+#include "MySaveGame.h"
 
 void AAculonPlayerController::BeginPlay()
 {
@@ -57,6 +58,8 @@ void AAculonPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIsW
     //         LoseScreen->AddToViewport();
     //     }
     // }
+
+    UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
 
     GetWorldTimerManager().SetTimer(RestartTimer, Aculon, &AAculon::LoadGame, RestartDelay);
 }

@@ -11,5 +11,5 @@ UMySaveGame::UMySaveGame()
     PlayerEnemiesKilled = 0;
     PlayerScore = 0;
     PlayerDoorScore = 0;
-    AculonCurrentLevelTitle = "";
+    AculonCurrentLevelTitle = FString("");
 }

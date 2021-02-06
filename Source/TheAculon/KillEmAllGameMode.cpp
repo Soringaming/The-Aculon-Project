@@ -16,6 +16,7 @@ void AKillEmAllGameMode::PawnKilled(APawn* PawnKilled)
     if (PlayerController != nullptr)
     {
         EndGame(false);
+        return;
     }
     else
     {
