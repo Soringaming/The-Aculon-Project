@@ -16,6 +16,10 @@ class THEACULON_API ATheAculonGameModeBase : public AGameModeBase
 
 public:
 	virtual void PawnKilled(APawn* PawnKilled);
-	virtual void IncrementScore(int32* KilledAmmount, int32* ScoreAmount, int32* AmountToDoor);
+	virtual void IncrementScore(int32* KilledAmmount, int32* ScoreAmount, int32* AmountToDoor, bool bIsSetting);
+
+	virtual int32 GetKilled();
+	virtual int32 GetScore();
+	virtual int32 GetDoorScore();
 
 };
