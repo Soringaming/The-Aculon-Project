@@ -6,6 +6,7 @@
 #include "Components/CapsuleComponent.h"
 #include "TheAculonGameModeBase.h"
 #include "Kismet/GameplayStatics.h"
+#include "MySaveGame.h"
 
 // Sets default values
 AAculon::AAculon()
@@ -66,13 +67,18 @@ void AAculon::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 	PlayerInputComponent->BindAction(TEXT("Shoot"), EInputEvent::IE_Pressed, this, &AAculon::Shoot);
 	PlayerInputComponent->BindAction(TEXT("Charge"), EInputEvent::IE_Pressed, this, &AAculon::StartChargingShot);
 	PlayerInputComponent->BindAction(TEXT("Charge"), EInputEvent::IE_Released, this, &AAculon::StopChargingShot);
+	PlayerInputComponent->BindAction(TEXT("LoadGame"), EInputEvent::IE_Released, this, &AAculon::LoadGame);
 }
 
 float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser)
 {
+
 	float DamageToApply = Super::TakeDamage(DamageAmount, DamageEvent, EventInstigator, DamageCauser);
 	DamageToApply = FMath::Min(Health, DamageToApply);
-	Health -= DamageToApply;
+	if (!IsDead())
+	{
+		Health -= DamageToApply;
+	}
 	UE_LOG(LogTemp, Warning, TEXT("Health Left: %f"), Health);
 
 	if (HitSound && !IsDead())
@@ -88,9 +94,9 @@ float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageE
 			GameMode->PawnKilled(this);
 			if (!bHasGeneratedScore)
 			{
-				int32 AmmountKilled = 1;
-				GameMode->IncrementScore(&AmmountKilled, &ScoreWorth, &DoorScore);
 				bHasGeneratedScore = true;
+				int32 AmmountKilled = 1;
+				GameMode->IncrementScore(&AmmountKilled, &ScoreWorth, &DoorScore, false);
 			}
 		}
 		if (DeathSound && !bHasPlayedDeathSound)
@@ -98,7 +104,14 @@ float AAculon::TakeDamage(float DamageAmount, struct FDamageEvent const& DamageE
 			UGameplayStatics::SpawnSoundAttached(DeathSound, GetMesh(), TEXT("SoundSocket"));
 			bHasPlayedDeathSound = true;
 		}
-		DetachFromControllerPendingDestroy();
+		if (this->GetController() != UGameplayStatics::GetPlayerController(GetWorld(), 0))
+		{
+			DetachFromControllerPendingDestroy();
+		}
+		else
+		{
+			this->DisableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+		}
 		GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	}
 
@@ -128,7 +141,51 @@ void AAculon::LookRightRate(float AxisValue)
 
 void AAculon::Shoot()
 {
-	Blaster->PullTrigger();
+	if (!IsDead())
+	{
+		Blaster->PullTrigger();
+	}
+}
+
+void AAculon::SaveGame()
+{
+	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
+	SaveGameInstance->PlayerLocation = this->GetActorLocation();
+	SaveGameInstance->PlayerRotation = this->GetActorRotation();
+	SaveGameInstance->AculonCurrentLevelTitle = GetWorld()->GetMapName();
+
+	ATheAculonGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ATheAculonGameModeBase>();
+	if (GameMode != nullptr)
+	{
+		SaveGameInstance->PlayerEnemiesKilled = GameMode->GetKilled();
+		SaveGameInstance->PlayerScore = GameMode->GetScore();
+		SaveGameInstance->PlayerDoorScore = GameMode->GetDoorScore();
+	}
+	// save the savegameinstance
+	UGameplayStatics::SaveGameToSlot(SaveGameInstance, TEXT("Slot1"), 0);
+
+}
+
+void AAculon::LoadGame()
+{
+	// Create an instance of our save game class, and also the first player
+	UMySaveGame* SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::CreateSaveGameObject(UMySaveGame::StaticClass()));
+	//Load the saved game into our savegameinstance
+	SaveGameInstance = Cast<UMySaveGame>(UGameplayStatics::LoadGameFromSlot(TEXT("Slot1"), 0));
+	ATheAculonGameModeBase* GameMode = GetWorld()->GetAuthGameMode<ATheAculonGameModeBase>();
+	if (SaveGameInstance && GameMode != nullptr)
+	{
+		SendToLevel(SaveGameInstance->AculonCurrentLevelTitle);
+		GameMode->IncrementScore(&SaveGameInstance->PlayerEnemiesKilled, &SaveGameInstance->PlayerScore, &SaveGameInstance->PlayerDoorScore, true);
+		RespawnAculon();
+		this->SetActorLocation(SaveGameInstance->PlayerLocation);
+		this->SetActorRotation(SaveGameInstance->PlayerRotation);
+	}
+}
+
+void AAculon::SendToLevel(const FString LevelTitle)
+{
+	GetWorld()->ServerTravel(LevelTitle);
 }
 
 void AAculon::StartChargingShot()
@@ -141,6 +198,13 @@ void AAculon::StopChargingShot()
 {
 	bIsCharging = false;
 	Blaster->SetCharging(bIsCharging);
+}
+
+void AAculon::RespawnAculon()
+{
+	Health = MaxHealth;
+	this->EnableInput(UGameplayStatics::GetPlayerController(GetWorld(), 0));
+	this->GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 }
 
 // void AAculon::LookUp(float AxisValue) 

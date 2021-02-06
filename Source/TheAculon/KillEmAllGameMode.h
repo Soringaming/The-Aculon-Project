@@ -16,7 +16,11 @@ class THEACULON_API AKillEmAllGameMode : public ATheAculonGameModeBase
 
 public:
 	void PawnKilled(APawn* PawnKilled) override;
-	void IncrementScore(int32* KilledAmmount, int32* ScoreAmount, int32* AmountToDoor) override;
+	void IncrementScore(int32* KilledAmmount, int32* ScoreAmount, int32* AmountToDoor, bool bIsSetting) override;
+
+	virtual int32 GetKilled() override;
+	virtual int32 GetScore() override;
+	virtual int32 GetDoorScore() override;
 
 private:
 	int32 EnemiesKilled = 0;

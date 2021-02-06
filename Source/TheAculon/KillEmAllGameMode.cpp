@@ -33,12 +33,36 @@ void AKillEmAllGameMode::PawnKilled(APawn* PawnKilled)
     EndGame(true);
 }
 
-void AKillEmAllGameMode::IncrementScore(int32* KilledAmmount, int32* ScoreAmount, int32* AmountToDoor)
+void AKillEmAllGameMode::IncrementScore(int32* KilledAmmount, int32* ScoreAmount, int32* AmountToDoor, bool bIsSetting)
 {
-    Super::IncrementScore(KilledAmmount, ScoreAmount, AmountToDoor);
-    EnemiesKilled += *KilledAmmount;
-    ScoreForEnemies += *ScoreAmount;
-    DoorScore += *AmountToDoor;
+    Super::IncrementScore(KilledAmmount, ScoreAmount, AmountToDoor, bIsSetting);
+    if (bIsSetting)
+    {
+        EnemiesKilled = *KilledAmmount;
+        ScoreForEnemies = *ScoreAmount;
+        DoorScore = *AmountToDoor;
+    }
+    else
+    {
+        EnemiesKilled += *KilledAmmount;
+        ScoreForEnemies += *ScoreAmount;
+        DoorScore += *AmountToDoor;
+    }
+}
+
+int32 AKillEmAllGameMode::GetKilled()
+{
+    return EnemiesKilled;
+}
+
+int32 AKillEmAllGameMode::GetScore()
+{
+    return ScoreForEnemies;
+}
+
+int32 AKillEmAllGameMode::GetDoorScore()
+{
+    return DoorScore;
 }
 
 void AKillEmAllGameMode::EndGame(bool bIsPlayerWinner)

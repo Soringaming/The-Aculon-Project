@@ -37,6 +37,9 @@ public:
 	virtual float TakeDamage(float DamageAmount, struct FDamageEvent const& DamageEvent, class AController* EventInstigator, AActor* DamageCauser) override;
 
 	void Shoot();
+	void SaveGame();
+	void LoadGame();
+	void SendToLevel(const FString LevelTitle);
 
 private:
 	void MoveForward(float AxisValue);
@@ -46,6 +49,7 @@ private:
 	void ChargedShot();
 	void StartChargingShot();
 	void StopChargingShot();
+	void RespawnAculon();
 
 	bool bIsCharging = false;
 	bool bHasGeneratedScore = false;

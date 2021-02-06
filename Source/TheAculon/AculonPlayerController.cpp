@@ -4,6 +4,8 @@
 #include "AculonPlayerController.h"
 #include "TimerManager.h"
 #include "Blueprint/UserWidget.h"
+#include "Aculon.h"
+#include "Kismet/GameplayStatics.h"
 
 void AAculonPlayerController::BeginPlay()
 {
@@ -32,24 +34,29 @@ void AAculonPlayerController::GameHasEnded(class AActor* EndGameFocus, bool bIsW
 {
     Super::GameHasEnded(EndGameFocus, bIsWinner);
 
-    RemoveHUD();
+    APawn* PlayerPawn = UGameplayStatics::GetPlayerPawn(GetWorld(), 0);
+    AAculon* Aculon = Cast<AAculon>(PlayerPawn);
 
-    if (bIsWinner)
-    {
-        UUserWidget* WinScreen = CreateWidget(this, WinScreenClass);
-        if (WinScreen != nullptr)
-        {
-            WinScreen->AddToViewport();
-        }
-    }
-    else
-    {
-        UUserWidget* LoseScreen = CreateWidget(this, LoseScreenClass);
-        if (LoseScreen != nullptr)
-        {
-            LoseScreen->AddToViewport();
-        }
-    }
+    if (Aculon == nullptr) { return; }
 
-    GetWorldTimerManager().SetTimer(RestartTimer, this, &APlayerController::RestartLevel, RestartDelay);
+    // RemoveHUD();
+
+    // if (bIsWinner)
+    // {
+    //     UUserWidget* WinScreen = CreateWidget(this, WinScreenClass);
+    //     if (WinScreen != nullptr)
+    //     {
+    //         WinScreen->AddToViewport();
+    //     }
+    // }
+    // else
+    // {
+    //     UUserWidget* LoseScreen = CreateWidget(this, LoseScreenClass);
+    //     if (LoseScreen != nullptr)
+    //     {
+    //         LoseScreen->AddToViewport();
+    //     }
+    // }
+
+    GetWorldTimerManager().SetTimer(RestartTimer, Aculon, &AAculon::LoadGame, RestartDelay);
 }
